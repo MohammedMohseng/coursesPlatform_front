@@ -136,8 +136,7 @@ export function isAuthenticated(): boolean {
 export function clearAuth(redirect: boolean = true): void {
   deleteCookie(ACCESS_TOKEN_KEY);
   deleteCookie('JWT_TOKEN')
-  // TODO: must be back
-  // if (redirect && isBrowser()) {
-  //   window.location.href = "/auth/login";
-  // }
+  if (redirect && isBrowser()) {
+    window.location.href = "/auth/login";
+  }
 }

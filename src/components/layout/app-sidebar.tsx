@@ -17,9 +17,9 @@ import {Logo} from '@/components/ui/custom/logo';
 import { useEffect, useState } from "react";
 import { Button } from "../ui/button";
 
-const getNavigationConfig = (pathname: string) => {
-  // TODO: navigations should be based on role, but pathname is safe for SSR and app routing.
-  if (pathname.includes("/student")) {
+const getNavigationConfig = (role: string | null) => {
+  
+  if (role === "STUDENT") {
     return [
       { title: "نظرة عامة", url: "/student", icon: LayoutDashboard },
       { title: "دوراتي", url: "/student/courses", icon: BookOpen },
@@ -30,7 +30,7 @@ const getNavigationConfig = (pathname: string) => {
     ];
   }
 
-  if (pathname.includes("/teacher")) {
+  if (role === "TEACHER") {
     return [
       { title: "نظرة عامة", url: "/teacher", icon: LayoutDashboard },
       { title: "دوراتي", url: "/teacher/courses", icon: BookOpen },
@@ -41,7 +41,7 @@ const getNavigationConfig = (pathname: string) => {
     ];
   }
 
-  if (pathname.includes("/admin")) {
+  if (role === "ADMIN") {
     return [
       { title: "نظرة عامة", url: "/admin", icon: LayoutDashboard },
       { title: "المستخدمون", url: "/admin/users", icon: User },
@@ -58,16 +58,16 @@ const getNavigationConfig = (pathname: string) => {
 
 export function AppSidebar() {
   const pathname = usePathname();
-  // const [role, setRole] = useState<string | null>(null);
+  const [role, setRole] = useState<string | null>(null);
  
-  // useEffect(() => {
-  //   async function name() {
-  //     setRole(getUserRole());
-  //   }
-  //   name()
-  // }, []);
+  useEffect(() => {
+    async function name() {
+      setRole(getUserRole());
+    }
+    name()
+  }, []);
 
-  const navItems = getNavigationConfig(pathname);
+  const navItems = getNavigationConfig(role);
 
   return (
     <Sidebar side="right" collapsible="icon">

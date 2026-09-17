@@ -37,10 +37,9 @@ export default function LoginPage() {
   useEffect(() => {
     if (isAuthenticated()) {
 
-      // TODO:must be back
-      // const role = getUserRole();
-      // if (role === "ADMIN") window.location.href = "/admin";
-      // else if (role === "TEACHER") window.location.href = "/teacher";
+      const role = getUserRole();
+      if (role === "ADMIN") window.location.href = "/admin";
+      else if (role === "TEACHER") window.location.href = "/teacher";
        window.location.href = "/student";
     }
   }, []);

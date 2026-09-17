@@ -38,8 +38,8 @@ async function customFetch<T>(
       deleteCookie("JWT_TOKEN");
       toast.error("يجب تسجيل الدخول أولاً");
       if (typeof window !== "undefined") {
-        // TODO:must be back
-        // window.location.href = "/auth/login";
+        
+        window.location.href = "/auth/login";
       }
       throw new Error("No token provided");
     }

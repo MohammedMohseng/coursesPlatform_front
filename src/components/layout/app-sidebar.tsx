@@ -16,10 +16,10 @@ import { BookOpen, User, CreditCard, Bell, LayoutDashboard, LogOut } from "lucid
 import {Logo} from '@/components/ui/custom/logo';
 import { useEffect, useState } from "react";
 import { Button } from "../ui/button";
-const getNavigationConfig = (role: string | null) => {
 
-  //TODO: navigations must based on role not url
-  if (window.location.href.includes("student")) {
+const getNavigationConfig = (pathname: string) => {
+  // TODO: navigations should be based on role, but pathname is safe for SSR and app routing.
+  if (pathname.includes("/student")) {
     return [
       { title: "نظرة عامة", url: "/student", icon: LayoutDashboard },
       { title: "دوراتي", url: "/student/courses", icon: BookOpen },
@@ -29,7 +29,8 @@ const getNavigationConfig = (role: string | null) => {
       { title: "الملف الشخصي", url: "/student/profile", icon: User },
     ];
   }
-  if (window.location.href.includes("teacher")) {
+
+  if (pathname.includes("/teacher")) {
     return [
       { title: "نظرة عامة", url: "/teacher", icon: LayoutDashboard },
       { title: "دوراتي", url: "/teacher/courses", icon: BookOpen },
@@ -39,7 +40,8 @@ const getNavigationConfig = (role: string | null) => {
       { title: "الملف الشخصي", url: "/teacher/profile", icon: User },
     ];
   }
-  if (window.location.href.includes("admin")){
+
+  if (pathname.includes("/admin")) {
     return [
       { title: "نظرة عامة", url: "/admin", icon: LayoutDashboard },
       { title: "المستخدمون", url: "/admin/users", icon: User },
@@ -50,21 +52,22 @@ const getNavigationConfig = (role: string | null) => {
       { title: "الملف الشخصي", url: "/admin/profile", icon: User },
     ];
   }
+
   return [];
 };
 
 export function AppSidebar() {
   const pathname = usePathname();
-  const [role, setRole] = useState<string | null>(null);
+  // const [role, setRole] = useState<string | null>(null);
  
-  useEffect(() => {
-    async function name() {
-      setRole(getUserRole());
-    }
-    name()
-  }, []);
+  // useEffect(() => {
+  //   async function name() {
+  //     setRole(getUserRole());
+  //   }
+  //   name()
+  // }, []);
 
-  const navItems = getNavigationConfig(role);
+  const navItems = getNavigationConfig(pathname);
 
   return (
     <Sidebar side="right" collapsible="icon">

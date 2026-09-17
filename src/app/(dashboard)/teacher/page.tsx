@@ -8,6 +8,7 @@ import { useUser } from "@/hooks/useUser";
 import { coursesApi } from "@/features/courses/api";
 import { enrollmentsApi } from "@/features/enrollments/api";
 import { notificationsApi } from "@/features/notifications/api";
+import { DashboardChart } from "@/components/ui/custom/charts";
 
 export default function TeacherOverviewPage() {
   const { user, isLoading } = useUser();
@@ -113,6 +114,27 @@ export default function TeacherOverviewPage() {
           ))}
         </div>
       )}
+
+      <DashboardChart
+        title="مؤشرات التدريس"
+        description="تقدير سريع للأداء الأكاديمي والإشعارات"
+        type="line"
+        data={[
+          { name: "الكورسات", total: stats.totalCourses },
+          { name: "الطلاب", total: stats.totalStudents },
+          { name: "الإشعارات", total: stats.unreadNotifications },
+        ]}
+        xKey="name"
+        dataKeys={["total"]}
+        config={{
+          total: { label: "المجموع", color: "#22c55e" },
+        }}
+        summary={[
+          { label: "الكورسات", value: stats.totalCourses },
+          { label: "الطلاب", value: stats.totalStudents },
+          { label: "الإشعارات", value: stats.unreadNotifications },
+        ]}
+      />
 
       <div className="bg-muted/30 border border-border rounded-xl p-4 space-y-2">
         <h2 className="text-sm font-semibold text-muted-foreground">روابط سريعة</h2>

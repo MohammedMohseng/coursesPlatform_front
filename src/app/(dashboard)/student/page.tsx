@@ -9,6 +9,7 @@ import { enrollmentsApi } from "@/features/enrollments/api";
 import { paymentsApi } from "@/features/payments/api";
 import { notificationsApi } from "@/features/notifications/api";
 import { Loading } from "@/components/ui/custom/loading";
+import { DashboardChart } from "@/components/ui/custom/charts";
 
 export default function StudentOverviewPage() {
   const { user, isLoading } = useUser();
@@ -116,6 +117,45 @@ export default function StudentOverviewPage() {
           ))}
         </div>
       )}
+
+      <DashboardChart
+        title="أداء الطالب"
+        description="نظرة سريعة على الكورسات والدفعات والإشعارات"
+        type="area"
+        data={[
+          {
+            name: "الكورسات",
+            active: stats.totalCourses,
+            pending: 0,
+          },
+          {
+            name: "المفعلة",
+            active: stats.approvedCourses,
+            pending: Math.max(stats.totalCourses - stats.approvedCourses, 0),
+          },
+          {
+            name: "الدفعات",
+            active: stats.pendingPayments,
+            pending: 0,
+          },
+          {
+            name: "الإشعارات",
+            active: stats.unreadNotifications,
+            pending: 0,
+          },
+        ]}
+        xKey="name"
+        dataKeys={["active", "pending"]}
+        config={{
+          active: { label: "الحالة", color: "#3b82f6" },
+          pending: { label: "المتبقي", color: "#22c55e" },
+        }}
+        summary={[
+          { label: "الكورسات", value: stats.totalCourses },
+          { label: "المفعلة", value: stats.approvedCourses },
+          { label: "المدفوعات", value: stats.pendingPayments },
+        ]}
+      />
 
       {/* Quick links */}
       <div className="bg-muted/30 border border-border rounded-xl p-4 space-y-2">

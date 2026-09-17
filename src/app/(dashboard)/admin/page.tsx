@@ -7,7 +7,7 @@ import { usersApi } from "@/features/users/api";
 import { subjectsApi } from "@/features/subjects/api";
 import { paymentsApi } from "@/features/payments/api";
 import { notificationsApi } from "@/features/notifications/api";
-import { ChartContainer } from "@/components/ui/chart";
+import { DashboardChart } from "@/components/ui/custom/charts";
 
 interface Stats {
   totalUsers: number;
@@ -126,11 +126,46 @@ export default function AdminOverviewPage() {
 
       )}
 
-      <div className="border-primary radius-md w-full min-h-[30vh]">
-      {/* <ChartContainer config={{}}>
-        
-      </ChartContainer> */}
-      </div>
+      {stats && (
+        <DashboardChart
+          title="مؤشرات المنصة"
+          description="ملخص سريع للنشاط الرئيسي في لوحة الإدارة"
+          type="bar"
+          data={[
+            {
+              name: "المستخدمون",
+              active: Math.max(stats.totalUsers - stats.pendingUsers, 0),
+              pending: stats.pendingUsers,
+            },
+            {
+              name: "المدفوعات",
+              active: 0,
+              pending: stats.pendingPayments,
+            },
+            {
+              name: "المواد",
+              active: stats.totalSubjects,
+              pending: 0,
+            },
+            {
+              name: "الإشعارات",
+              active: stats.unreadNotifications,
+              pending: 0,
+            },
+          ]}
+          xKey="name"
+          dataKeys={["active", "pending"]}
+          config={{
+            active: { label: "النشط", color: "#3b82f6" },
+            pending: { label: "قيد المراجعة", color: "#f59e0b" },
+          }}
+          summary={[
+            { label: "المستخدمون", value: stats.totalUsers },
+            { label: "المعلّقون", value: stats.pendingUsers },
+            { label: "المدفوعات", value: stats.pendingPayments },
+          ]}
+        />
+      )}
     </div>
   );
 }
